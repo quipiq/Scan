@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import socket
-#import win10toast
+import win10toast
 from urllib.parse import urlparse
 from subprocess import Popen, PIPE
 import requests
@@ -29,9 +29,9 @@ def scan():
     			sock.connect((ip, i))
     			portco = print(f"{ip} port {i} connecté")
     			print(portco)
-    			#print (" try socket.error=",socket.error)
+    			print (" try socket.error=",socket.error)
     			sock.close()
-    			#toaster.show_toast('Port ouvert',f'{ip} port {i} connecté', duration = 10)
+    			toaster.show_toast('Port ouvert',f'{ip} port {i} connecté', duration = 10)
     			fichier = open("data.txt", "a")
     			fichier.write(f"{ip} port {i} connecté\n")
     			fichier.close()
@@ -39,7 +39,7 @@ def scan():
     		except socket.error:
 
     			print (" except socket.error=",socket.error)
-    			print("Port", i,"Ferme")
+    			print(f"{ip}Port {i} Ferme")
 
 
     	x = x + 1
