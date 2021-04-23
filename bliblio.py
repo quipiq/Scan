@@ -9,8 +9,8 @@ import requests
 
 
 def scan():
-    #toaster = win10toast.ToastNotifier()
-    ip = input("Veuillez entrer l'IP : ")
+    toaster = win10toast.ToastNotifier()
+    demande = input("Veuillez entrer l'IP : ")
     port = [23432,31337,12349,6667,6969]
 
 
@@ -19,13 +19,11 @@ def scan():
 
     x=1
     while x < 255:
+	ip = f"{demande}.{x}"
 
     	for i in port:
 
     		try:
-
-    			#print (" while socket.error=",socket.error)
-    			#print(ip," ",i)
     			sock.connect((ip, i))
     			portco = print(f"{ip} port {i} connecté")
     			print(portco)
