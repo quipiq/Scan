@@ -2,8 +2,6 @@
 
 import socket
 import win10toast
-from urllib.parse import urlparse
-from subprocess import Popen, PIPE
 import requests
 #from webb import webb
 
