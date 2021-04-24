@@ -33,11 +33,7 @@ Sur cette exemple la connexion vient de l'extérieur sur un port fermé par déf
 
 Si nous reprenons l'exemple du dessus mais cette fois si en changeait de sens la requête. C'est a dire de l'intérieur vers l'extérieur.
 
-```mermaid
-graph LR
-A[Réseau local] -- test connexion --> B{{Pare-feux port: 45 300}}
-B --> c[Serveur distant]
-```
+![connexion_interieur](https://user-images.githubusercontent.com/72353621/115956988-2f796500-a500-11eb-88ba-24ccba2bce51.png)
 
 Par défaut toute les connexions de l'intérieur a l'extérieur sont autorisé. Donc cette connexion marchera. 
 
