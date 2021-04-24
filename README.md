@@ -47,7 +47,7 @@ Pour cela on va entrez une plage d'IP à scanner (exemple : Si l'on rentrer 198.
 
 Je n'ai pas mit une liste trop longue mais vous pouvez en rajouter et en enlevé a votre guise. 
 
- Prenons pour exemple un bout de scan sur l'IP 198.235.145.165:
+Prenons pour exemple un bout de scan sur l'IP 198.235.145.165:
  
  
  
