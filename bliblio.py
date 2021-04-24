@@ -84,8 +84,8 @@ def serveur():
 	
 	reponse = requests.head(url)
 
-	test = reponse.headers
+	Head = reponse.headers
 
-	serveur = test.get("Server")
+	serveur = Head.get("Server")
 	print(f"Serveur : {serveur}")
 	
