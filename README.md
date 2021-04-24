@@ -95,3 +95,58 @@ Ce tableau représentatif est loin de montrer toute les valeurs du Head. J'ai ju
 Il ne faut plus que faire la recherche de la valeur server dans le dictionnaire, de la faire affiché et le tour est jouer. 
 
 A partir de cette information vous pouvez faire des recherches sur des potentielles failles de sécurité de la version du serveur puis essayer de les exploiter.
+
+## Traceroute avec le nom de domaine
+
+### Comment sa marche ? 
+C'est options est assez simple. Elle permet d'envoyer des paquets a un serveur et de voir si le serveur répond et avoir des infos. Je m'explique, si vous faites un traceroute sur un site et que vous voyez que vous perdez pas mal de paquets, c'est a dire qu'il y a un problème de connexion avec le serveur. 
+
+Cette fonction peut avoir une deuxième utilité. Celle-ci est d'étudier la structure d'un réseau. 
+Imaginons vous avez accès à une invite de commande sur un PC dans un réseau. Vous voulez étudiés la structure du réseau c'est a dire nombres de machines, nombre de routeur etc...
+Lorsque que l'on va faire un traceroute on va voir par qu'elle points la paquet va passer, c'est les dire les routeurs etc... 
+
+Voila un exemple de structure de réseau assez basique : 
+
+![Untitled Workspace (1)](https://user-images.githubusercontent.com/72353621/115970945-04196900-a546-11eb-80f3-3256c520e0b2.png)
+
+Ce réseau est assez complet, pour mieux vous expliquez comment marche le traceroute je vais utiliser un autre réseau simplifier :
+
+![Untitled Workspace](https://user-images.githubusercontent.com/72353621/115970949-08de1d00-a546-11eb-8c0a-a9547a5052d8.png)
+
+Pour vous montrez je vais utiliser CMD. La commande pour CMD ne s'appelle pas traceroute mais tracert, il faut après le tracert mettre le nom de domaine(url) ou l'IP. Je vais pour cette exemple utiliser la commande sur le site ibm.com. 
+
+je vais donc entrer la commande :  `tracert www.ibm.com`
+
+une fois cela fait voici le retour de l'opération :
+
+    1     5 ms     4 ms     5 ms  livebox.home [****:****:****:****:****:****:****:****]
+	2     5 ms    11 ms    34 ms  2a01cb08a00402080193025300750037.ipv6.abo.wanadoo.fr [2a01:cb08:a004:208:193:253:75:37]
+	3    17 ms    27 ms    21 ms  2a01:cfc4:0:b00::b
+	4    24 ms    19 ms     *     bundle-ether101.auvtr5.aubervilliers.opentransit.net [2a01:cfc4:0:b00::5]
+	5    33 ms    23 ms    28 ms  2001:688:0:3:8::332
+	6    92 ms    31 ms    25 ms  ae2.r07.spine101.par01.fab.netarch.akamai.com [2a02:26f0:2900:308::1]
+	7    31 ms    36 ms    32 ms  ae7.r01.leaf101.par01.fab.netarch.akamai.com [2a02:26f0:2900:a01::1]
+	8    21 ms    29 ms    59 ms  ae1.r07.tor101.par01.fab.netarch.akamai.com [2a02:26f0:2900:1407::1]
+	9    19 ms    29 ms    20 ms  g2a02-26f0-2b00-03ad-0000-0000-0000-0b3a.deploy.static.akamaitechnologies.com [2a02:26f0:2b00:3ad::b3a]
+
+Commençons par décomposée ce résultat en deux partie distinctes, la première est celle comportant les 3 première valeur de chaque ligne qui s'avère être le temps que l'action a pris à s'effectuer (le temps d'envoie et de réception).
+
+|lignes                         |valeur                        |
+|-------------------------------|-----------------------------|
+|1                              |5 ms - 4 ms - 5 ms           |
+|2                              |5 ms - 11 ms - 34 ms             |
+|3                              |17 ms - 27 ms - 21 ms            |
+|4                              |24 ms - 19 ms - *                |
+|5                              |33 ms - 23 ms - 28 ms            |
+|6                              |92 ms - 31 ms - 25 ms            |
+|7                              |31 ms - 36 ms - 32 ms            |
+|8                              |21 ms - 29 ms - 59 ms            |
+|9                              |19 ms - 29 ms - 20 ms            |
+
+La deuxième sera le reste de chaque ligne. Cela va donner le nom du routeur par lequel il passe et son IP V6. Attention pour la dernière ligne ce n'est pas un routeur mais un serveur web car il est arrivé a destinations. Si je compare le résultat de ce traceroute et mon schéma de réseau ci-dessus, les valeurs correspondes bien, j'ai le paquet qui passe par le seul routeur que contient mon réseau (en générale la box qui comprend aussi le firewall) puis va ensuite dans les routeur externe pour arriver à la destination voulue (le serveur web).
+
+> Pour des raisons de sécurité j'ai remplacer l'IP de mon routeur par des étoiles. Vous vous douterez bien qu'il y aura marqué l'IP de votre routeur lorsque vous le ferrez et non des étoiles. 
+
+# Conclusion
+
+Voila les 4 fonctions de ce programme expliqué. A vous d'en faire ce que vous voulez.
