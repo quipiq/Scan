@@ -25,11 +25,8 @@ Votre pare-feu sert a protéger votre réseau. Pour cela il va ouvrir ou fermer 
 
 Example : 
 
-```mermaid
-graph LR
-A[Serveur distant] -- test connexion --> B{{Pare-feux port: 45 300}}
-B --> c[Réseau local]
-```
+![connexion_exterieur](https://user-images.githubusercontent.com/72353621/115956947-fe993000-a4ff-11eb-975a-cc4ef3a5e18e.png)
+
 
 Sur cette exemple la connexion vient de l'extérieur sur un port fermé par défaut car au dessus de 1024. Cette essaie de connexion sera donc refusé par le pare-feu.
 
