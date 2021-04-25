@@ -1,15 +1,14 @@
 # Scan
-Scan est un petit programme permettant de :
+Scan est un programme de type couteau-suisse permettant de :
 - Récupérer l'IP d'un site a partir de son url
 - Obtenir la version du serveur hébergeant le site
 - Faire un traceroute vers une IP 
 - Scanner des chevaux de Troie sur un réseau.
 
-# A quoi sert-il?
-Ce programme facilite des actions orienté web (sauf le scan de cheval de troie sur un réseau). Vous n'avez qu'a lancé le programme et choisir votre options. Une fois cela fait vous avez juste a suivre ce que le programme vous demande. Il reste très simpliste mais suffit largement.
 
-# téléchargements
-Vous avez juste a télécharger le dossier et à bien faire attention de mettre la [bibliotheque.py](https://github.com/quipiq/Scan/blob/main/bliblio.py) et le [main.py](https://github.com/quipiq/Scan/blob/main/main.py) dans le même dossier ou alors changer le chemin dans le programme.
+
+# Téléchargements
+Téléchargez le dossier. Attention à mettre la [bibliotheque.py](https://github.com/quipiq/Scan/blob/main/bliblio.py) et le [main.py](https://github.com/quipiq/Scan/blob/main/main.py) dans le même dossier ou bien changer le chemin dans le programme.
 
 # Les différentes options
 
