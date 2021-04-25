@@ -12,6 +12,92 @@ Téléchargez le dossier. Attention à mettre la [bibliotheque.py](https://githu
 
 # Les différentes options
 
+## Récupérer l'IP d'un site a partir de son url:
+
+### Comment ça marche ? 
+
+Cette option n'est que l'exploitation de la résolution de noms des serveurs DNS permttant de retourner l'adresse Ip correspondant à une URL.
+
+Une fois l'IP récupérée, vous pouvez l'utiliser afin de rechercher la version du serveur web, ainsi que réaliser des scans sur la présence de chevaux de Troie.
+
+
+## Obtenir la version du serveur hébergeant le site
+
+### Comment ça marche ? 
+
+Cette option renvoie la version du serveur web d'un site. 
+
+Nous faisons appel aux méthodes de requêtes HTTP, définies dans la section 4 de la RFC 7231 et section 2 dela RFC 5789.
+
+En python les dictionnaire sont constituer d'une clef a laquelle on va assigner une valeur. Une fois cela fait on peut faire des recherches dans le dictionnaire par clef.
+
+Voici un exemple simple d'un dictionnaire reçus avec une requête web : 
+
+
+|clefs                         |valeur                        |
+|-------------------------------|-----------------------------|
+|date                           |Fri, 23 Apr 2021 23:27:11 GMT|
+|age                            |1733                         |
+|vary                           |Accept-Encoding              |
+|server                         |apache 2.4.46                |
+
+Ce tableau n'est pas exhaustif, référrez-vous aux RFC pour en obtenir une liste détaillée. La clef qui nous intéresse est la clef "server" qui retourne sur l'exemple ci-dessus la version d'Apache utilisée.
+
+A partir de cette information vous pouvez faire des recherches sur de potentielles failles de sécurité de la version du serveur afin de les exploiter ou de protéger votre serveur.
+
+## Faire un traceroute vers une IP
+
+### Comment sa marche ? 
+Cette option est assez simple. Elle envoie un paquet UDP ou ICMP vers un serveur. Ces derniers transitent par des routeurs qui permettent d'indiquer différentes informations sur le parcours suivi par le paquet. 
+
+Cette fonction est très pratique car lancée sur un réseau elle peut aider à encomprendre l'architecture interne. 
+Imaginons vous avez accès à une invite de commande sur un PC dans un réseau. Vous voulez étudier la structure du réseau c'est a dire le nombre de machines, de routeurs, etc...
+Le traceroute vous indiquera par quels points la paquet passera, c'est les dire les différents routeurs rencontrés. 
+
+Voila un exemple de structure de réseau: 
+
+![Untitled Workspace (1)](https://user-images.githubusercontent.com/72353621/115970945-04196900-a546-11eb-80f3-3256c520e0b2.png)
+
+Ce réseau est assez complet, pour mieux vous expliquez comment marche le traceroute je vais utiliser un autre réseau simplifier :
+
+![Untitled Workspace](https://user-images.githubusercontent.com/72353621/115970949-08de1d00-a546-11eb-8c0a-a9547a5052d8.png)
+
+Pour vous montrez je vais utiliser CMD. La commande pour CMD ne s'appelle pas traceroute mais tracert, il faut après le tracert mettre le nom de domaine(url) ou l'IP. Je vais pour cette exemple utiliser la commande sur le site ibm.com. 
+
+je vais donc entrer la commande :  `tracert www.ibm.com`
+
+une fois cela fait voici le retour de l'opération :
+
+    1     5 ms     4 ms     5 ms  livebox.home [****:****:****:****:****:****:****:****]
+	2     5 ms    11 ms    34 ms  2a01cb08a00402080193025300750037.ipv6.abo.wanadoo.fr [2a01:cb08:a004:208:193:253:75:37]
+	3    17 ms    27 ms    21 ms  2a01:cfc4:0:b00::b
+	4    24 ms    19 ms     *     bundle-ether101.auvtr5.aubervilliers.opentransit.net [2a01:cfc4:0:b00::5]
+	5    33 ms    23 ms    28 ms  2001:688:0:3:8::332
+	6    92 ms    31 ms    25 ms  ae2.r07.spine101.par01.fab.netarch.akamai.com [2a02:26f0:2900:308::1]
+	7    31 ms    36 ms    32 ms  ae7.r01.leaf101.par01.fab.netarch.akamai.com [2a02:26f0:2900:a01::1]
+	8    21 ms    29 ms    59 ms  ae1.r07.tor101.par01.fab.netarch.akamai.com [2a02:26f0:2900:1407::1]
+	9    19 ms    29 ms    20 ms  g2a02-26f0-2b00-03ad-0000-0000-0000-0b3a.deploy.static.akamaitechnologies.com [2a02:26f0:2b00:3ad::b3a]
+
+Commençons par décomposée ce résultat en deux partie distinctes, la première est celle comportant les 3 première valeur de chaque ligne qui s'avère être le temps que l'action a pris à s'effectuer (le temps d'envoie et de réception).
+
+|lignes                         |valeur                        |
+|-------------------------------|-----------------------------|
+|1                              |5 ms - 4 ms - 5 ms           |
+|2                              |5 ms - 11 ms - 34 ms             |
+|3                              |17 ms - 27 ms - 21 ms            |
+|4                              |24 ms - 19 ms - *                |
+|5                              |33 ms - 23 ms - 28 ms            |
+|6                              |92 ms - 31 ms - 25 ms            |
+|7                              |31 ms - 36 ms - 32 ms            |
+|8                              |21 ms - 29 ms - 59 ms            |
+|9                              |19 ms - 29 ms - 20 ms            |
+
+La deuxième sera le reste de chaque ligne. Cela va donner le nom du routeur par lequel il passe et son IP V6. Attention pour la dernière ligne ce n'est pas un routeur mais un serveur web car il est arrivé a destinations. Si je compare le résultat de ce traceroute et mon schéma de réseau ci-dessus, les valeurs correspondes bien, j'ai le paquet qui passe par le seul routeur que contient mon réseau (en générale la box qui comprend aussi le firewall) puis va ensuite dans les routeur externe pour arriver à la destination voulue (le serveur web).
+
+> Pour des raisons de sécurité j'ai remplacer l'IP de mon routeur par des étoiles. Vous vous douterez bien qu'il y aura marqué l'IP de votre routeur lorsque vous le ferrez et non des étoiles. 
+
+
+
 ## Le scan de cheval de troie sur réseau
 
 ### Comment sa marche ? 
@@ -65,90 +151,9 @@ Libre a vous de changer le programme pour faire des scans précis avec un object
 ### Utilisation
  Il faudra juste mettre les trois premiers nombres de l'IP (exemple : pour faire un scan a partir de l'IP 198.235.145.1 je mettrai 192.235.145). Pas besoin de mettre le point ni le dernier nombre sinon le programme va vous marquez une erreur.
 
-## Récupération d'IP à partir d'url (nom de domaine) 
-
-### Comment sa marche ? 
-
-Ce programme va servir a récupérer l'IP d'un site. Je ne peut pas vraiment détaillé comment sa marche car c'est juste une fonction des sockets qui va me le permettre. Mais une fois l'IP récupéré elle nous servira pour savoir la version du serveur qui héberge le site web pour trouver des failles potentielles et faire une attaque.
-
-## Récupération de la version du serveur web
-
-### Comment sa marche ? 
-
-Se programme va nous renvoyer la versions du serveur web d'un site. 
-
-Pour avoir ces infos il faut ce pencher sur le Head des sites. Attention a ne pas confondre, je ne parle pas du Head qui se trouve dans le html mais d'un autre Head. C'est un peut le même principe, il contient des infos sur le site et sur le serveur web. Toute ces infos seront contenues dans un dictionnaire qui contient les même infos pour tout les sites. 
-
-Nous allons donc faire une requêtes aux site pour qu'il nous renvoies ces infos, c'est ce que l'on appelle un requête web. Il en existe plein différente, mais dans ce programme je vais utiliser que celle la.
-
-En python les dictionnaire sont constituer d'une clef a laquelle on va assigner une valeur. Une fois cela fait on peut faire des recherches dans le dictionnaire par clef.
-
-Voici un exemple simple d'un dictionnaire reçus avec une requête web : 
 
 
-|clefs                         |valeur                        |
-|-------------------------------|-----------------------------|
-|date                           |Fri, 23 Apr 2021 23:27:11 GMT|
-|age                            |1733                         |
-|vary                           |Accept-Encoding              |
-|server                         |apache 2.4.46                |
 
-Ce tableau représentatif est loin de montrer toute les valeurs du Head. J'ai juste mit quelques valeurs histoire de montrée. Celle qui va nous intéressées sera la valeur de la clefs nommée server. Dans l'exemple si dessus la valeur sera apache 2.4.46 donc la version du serveur web.
-
-Il ne faut plus que faire la recherche de la valeur server dans le dictionnaire, de la faire affiché et le tour est jouer. 
-
-A partir de cette information vous pouvez faire des recherches sur des potentielles failles de sécurité de la version du serveur puis essayer de les exploiter.
-
-## Traceroute avec le nom de domaine
-
-### Comment sa marche ? 
-C'est options est assez simple. Elle permet d'envoyer des paquets a un serveur et de voir si le serveur répond et avoir des infos. Je m'explique, si vous faites un traceroute sur un site et que vous voyez que vous perdez pas mal de paquets, c'est a dire qu'il y a un problème de connexion avec le serveur. 
-
-Cette fonction peut avoir une deuxième utilité. Celle-ci est d'étudier la structure d'un réseau. 
-Imaginons vous avez accès à une invite de commande sur un PC dans un réseau. Vous voulez étudiés la structure du réseau c'est a dire nombres de machines, nombre de routeur etc...
-Lorsque que l'on va faire un traceroute on va voir par qu'elle points la paquet va passer, c'est les dire les routeurs etc... 
-
-Voila un exemple de structure de réseau assez basique : 
-
-![Untitled Workspace (1)](https://user-images.githubusercontent.com/72353621/115970945-04196900-a546-11eb-80f3-3256c520e0b2.png)
-
-Ce réseau est assez complet, pour mieux vous expliquez comment marche le traceroute je vais utiliser un autre réseau simplifier :
-
-![Untitled Workspace](https://user-images.githubusercontent.com/72353621/115970949-08de1d00-a546-11eb-8c0a-a9547a5052d8.png)
-
-Pour vous montrez je vais utiliser CMD. La commande pour CMD ne s'appelle pas traceroute mais tracert, il faut après le tracert mettre le nom de domaine(url) ou l'IP. Je vais pour cette exemple utiliser la commande sur le site ibm.com. 
-
-je vais donc entrer la commande :  `tracert www.ibm.com`
-
-une fois cela fait voici le retour de l'opération :
-
-    1     5 ms     4 ms     5 ms  livebox.home [****:****:****:****:****:****:****:****]
-	2     5 ms    11 ms    34 ms  2a01cb08a00402080193025300750037.ipv6.abo.wanadoo.fr [2a01:cb08:a004:208:193:253:75:37]
-	3    17 ms    27 ms    21 ms  2a01:cfc4:0:b00::b
-	4    24 ms    19 ms     *     bundle-ether101.auvtr5.aubervilliers.opentransit.net [2a01:cfc4:0:b00::5]
-	5    33 ms    23 ms    28 ms  2001:688:0:3:8::332
-	6    92 ms    31 ms    25 ms  ae2.r07.spine101.par01.fab.netarch.akamai.com [2a02:26f0:2900:308::1]
-	7    31 ms    36 ms    32 ms  ae7.r01.leaf101.par01.fab.netarch.akamai.com [2a02:26f0:2900:a01::1]
-	8    21 ms    29 ms    59 ms  ae1.r07.tor101.par01.fab.netarch.akamai.com [2a02:26f0:2900:1407::1]
-	9    19 ms    29 ms    20 ms  g2a02-26f0-2b00-03ad-0000-0000-0000-0b3a.deploy.static.akamaitechnologies.com [2a02:26f0:2b00:3ad::b3a]
-
-Commençons par décomposée ce résultat en deux partie distinctes, la première est celle comportant les 3 première valeur de chaque ligne qui s'avère être le temps que l'action a pris à s'effectuer (le temps d'envoie et de réception).
-
-|lignes                         |valeur                        |
-|-------------------------------|-----------------------------|
-|1                              |5 ms - 4 ms - 5 ms           |
-|2                              |5 ms - 11 ms - 34 ms             |
-|3                              |17 ms - 27 ms - 21 ms            |
-|4                              |24 ms - 19 ms - *                |
-|5                              |33 ms - 23 ms - 28 ms            |
-|6                              |92 ms - 31 ms - 25 ms            |
-|7                              |31 ms - 36 ms - 32 ms            |
-|8                              |21 ms - 29 ms - 59 ms            |
-|9                              |19 ms - 29 ms - 20 ms            |
-
-La deuxième sera le reste de chaque ligne. Cela va donner le nom du routeur par lequel il passe et son IP V6. Attention pour la dernière ligne ce n'est pas un routeur mais un serveur web car il est arrivé a destinations. Si je compare le résultat de ce traceroute et mon schéma de réseau ci-dessus, les valeurs correspondes bien, j'ai le paquet qui passe par le seul routeur que contient mon réseau (en générale la box qui comprend aussi le firewall) puis va ensuite dans les routeur externe pour arriver à la destination voulue (le serveur web).
-
-> Pour des raisons de sécurité j'ai remplacer l'IP de mon routeur par des étoiles. Vous vous douterez bien qu'il y aura marqué l'IP de votre routeur lorsque vous le ferrez et non des étoiles. 
 
 # Conclusion
 
