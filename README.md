@@ -67,7 +67,6 @@ Utilisez l'option 2 de cette manière:
 Veuillez entrer ce que vous voulez faire : 2
 
 Veuillez entrer le nom de domaine : www.ibm.com
-www.ibm.com
 
 une fois cela fait voici le retour de l'opération :
 
@@ -105,25 +104,24 @@ Cela indique le nom du routeur par lequel transite le paquet. La dernière ligne
 
 ### Comment ça marche ? 
 
-La bibliothèque [socket](https://pypi.org/project/sockets/) est requise. 
+La bibliothèque [sockets](https://pypi.org/project/sockets/) est requise. 
 Installation : `pip3 install socket`
 
-Nous allons nous servir des ports ouvert sur le pare-feu d'un réseau. 
+Le but est de rechercher des ports ouverts sur le pare-feu d'un réseau, correspondant à des ports généralement affectés à dees Chevaux de Troie. 
 
-Tout d'abord qu'est ce que sont les ports et comment marchent-ils.
-Votre pare-feu sert a protéger votre réseau. Pour cela il va ouvrir ou fermer certaine "porte d'accès" appelée ports. Le pare-feu est constituer de 65 535 ports dont les 1024 premiers sont utiliser pour des protocoles spécifique (20 = TCP, 80 = HTTP,  22 = SSH etc...).
-
- Pour faire des scans les 1024 premiers ne vont pas forcément être intéressant sauf si l'on veut récupérer la version du serveur derrière. La particularité de ces ports est de base pour une connexion de l'extérieur tout les ports au dessus de 1024 vont être fermé. Mais le plus intéressant est que de l'intérieur l'information peut sortir de n'importe qu'elle ports.
+Qu'est-ce qu'un port?
+Le pare-feu sert a protéger votre réseau. Pour cela il ouvre ou ferme certaines "porte d'accès" appelée ports. Ces ports sont 'natés' (NAT : Network Adress Translation) vers des ports logiques de serveurs. Ces ports sont au nombre de 65 535. Les 1024 premiers sont utilisés pour des protocoles spécifiques (20 et 21 = FTP, 80 = HTTP,  22 = SSH etc...) mais ce n'est qu'une attribution arbitraire qui peut être modifiée. 
+Vous aurez plus de détails, dont l'origine de 65535 ports en consultant la section 3.1 de la RFC 793.
 
 Example : 
 
 ![connexion_exterieur](https://user-images.githubusercontent.com/72353621/115956947-fe993000-a4ff-11eb-975a-cc4ef3a5e18e.png)
 
 
-Sur cette exemple la connexion vient de l'extérieur sur un port fermé par défaut car au dessus de 1024. Cette essaie de connexion sera donc refusé par le pare-feu.
+Sur cet exemple la connexion vient de l'extérieur sur un port fermé par défaut car situé au dessus de 1024. Cet essai de connexion sera donc refusé par le pare-feu.
 
 
-Si nous reprenons l'exemple du dessus mais cette fois si en changeait de sens la requête. C'est a dire de l'intérieur vers l'extérieur.
+Reprenons notre exemple en changeant la requête de sens . C'est a dire de l'intérieur vers l'extérieur.
 
 ![connexion_interieur](https://user-images.githubusercontent.com/72353621/115956988-2f796500-a500-11eb-88ba-24ccba2bce51.png)
 
