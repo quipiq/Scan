@@ -3,7 +3,7 @@ Scan est un programme de type couteau-suisse permettant de :
 - Récupérer l'IP d'un site a partir de son url
 - Obtenir la version du serveur hébergeant le site
 - Faire un traceroute vers une IP 
-- Scanner des chevaux de Troie sur un réseau.
+- Scanner des chevaux de Troie sur un réseau
 
 
 
@@ -41,36 +41,39 @@ Voici un exemple simple d'un dictionnaire reçus avec une requête web :
 |vary                           |Accept-Encoding              |
 |server                         |apache 2.4.46                |
 
-Ce tableau n'est pas exhaustif, référrez-vous aux RFC pour en obtenir une liste détaillée. La clef qui nous intéresse est la clef "server" qui retourne sur l'exemple ci-dessus la version d'Apache utilisée.
+Ce tableau n'est pas exhaustif, référez-vous aux RFC afin d'en obtenir une liste détaillée. La clef qui nous intéresse est la clef "server" qui retourne dans l'exemple ci-dessus la version d'Apache utilisée.
 
 A partir de cette information vous pouvez faire des recherches sur de potentielles failles de sécurité de la version du serveur afin de les exploiter ou de protéger votre serveur.
 
 ## Faire un traceroute vers une IP
 
 ### Comment sa marche ? 
-Cette option est assez simple. Elle envoie un paquet UDP ou ICMP vers un serveur. Ces derniers transitent par des routeurs qui permettent d'indiquer différentes informations sur le parcours suivi par le paquet. 
+Cette option envoie un paquet UDP ou ICMP vers un serveur. Il transite par des routeurs qui permettent d'indiquer différentes informations sur le parcours suivi par le paquet. 
 
 Cette fonction est très pratique car lancée sur un réseau elle peut aider à encomprendre l'architecture interne. 
 Imaginons vous avez accès à une invite de commande sur un PC dans un réseau. Vous voulez étudier la structure du réseau c'est a dire le nombre de machines, de routeurs, etc...
-Le traceroute vous indiquera par quels points la paquet passera, c'est les dire les différents routeurs rencontrés. 
+Le traceroute vous indiquera par quels points la paquet passera, c'est-à-dire les différents routeurs rencontrés. 
 
 Voila un exemple de structure de réseau: 
 
-![Untitled Workspace (1)](https://user-images.githubusercontent.com/72353621/115970945-04196900-a546-11eb-80f3-3256c520e0b2.png)
-
-Ce réseau est assez complet, pour mieux vous expliquez comment marche le traceroute je vais utiliser un autre réseau simplifier :
 
 ![Untitled Workspace](https://user-images.githubusercontent.com/72353621/115970949-08de1d00-a546-11eb-8c0a-a9547a5052d8.png)
 
-Pour vous montrez je vais utiliser CMD. La commande pour CMD ne s'appelle pas traceroute mais tracert, il faut après le tracert mettre le nom de domaine(url) ou l'IP. Je vais pour cette exemple utiliser la commande sur le site ibm.com. 
+Vous souhaitez savoir par quels routeurs vous transitez pour atteinde le site 'www.ibm.com`.
+Utilisez l'option 2 de cette manière:
 
-je vais donc entrer la commande :  `tracert www.ibm.com`
+2 - traceroute sur un nom de domaine
+
+Veuillez entrer ce que vous voulez faire : 2
+
+Veuillez entrer le nom de domaine : www.ibm.com
+www.ibm.com
 
 une fois cela fait voici le retour de l'opération :
 
     1     5 ms     4 ms     5 ms  livebox.home [****:****:****:****:****:****:****:****]
-	2     5 ms    11 ms    34 ms  2a01cb08a00402080193025300750037.ipv6.abo.wanadoo.fr [2a01:cb08:a004:208:193:253:75:37]
-	3    17 ms    27 ms    21 ms  2a01:cfc4:0:b00::b
+	2     5 ms    11 ms    34 ms  2001cb08a01402080193025300760037.ipv6.abo.wanadoo.fr [2001:cb08:a014:208:193:253:76:37]
+	3    17 ms    27 ms    21 ms  2001:cfc4:0:b00::b
 	4    24 ms    19 ms     *     bundle-ether101.auvtr5.aubervilliers.opentransit.net [2a01:cfc4:0:b00::5]
 	5    33 ms    23 ms    28 ms  2001:688:0:3:8::332
 	6    92 ms    31 ms    25 ms  ae2.r07.spine101.par01.fab.netarch.akamai.com [2a02:26f0:2900:308::1]
@@ -78,31 +81,31 @@ une fois cela fait voici le retour de l'opération :
 	8    21 ms    29 ms    59 ms  ae1.r07.tor101.par01.fab.netarch.akamai.com [2a02:26f0:2900:1407::1]
 	9    19 ms    29 ms    20 ms  g2a02-26f0-2b00-03ad-0000-0000-0000-0b3a.deploy.static.akamaitechnologies.com [2a02:26f0:2b00:3ad::b3a]
 
-Commençons par décomposée ce résultat en deux partie distinctes, la première est celle comportant les 3 première valeur de chaque ligne qui s'avère être le temps que l'action a pris à s'effectuer (le temps d'envoie et de réception).
+Décomposons ce résultat en deux parties distinctes:
+- La première comporte les 3 premières valeur de chaque ligne qui s'avère être le temps que l'action a pris à s'effectuer (le temps d'envoie et de réception).
 
-|lignes                         |valeur                        |
-|-------------------------------|-----------------------------|
-|1                              |5 ms - 4 ms - 5 ms           |
-|2                              |5 ms - 11 ms - 34 ms             |
-|3                              |17 ms - 27 ms - 21 ms            |
-|4                              |24 ms - 19 ms - *                |
-|5                              |33 ms - 23 ms - 28 ms            |
-|6                              |92 ms - 31 ms - 25 ms            |
-|7                              |31 ms - 36 ms - 32 ms            |
-|8                              |21 ms - 29 ms - 59 ms            |
-|9                              |19 ms - 29 ms - 20 ms            |
+	|lignes                         |valeur                        |
+	|-------------------------------|-----------------------------|
+	|1                              |5 ms - 4 ms - 5 ms           |
+	|2                              |5 ms - 11 ms - 34 ms             |
+	|3                              |17 ms - 27 ms - 21 ms            |
+	|4                              |24 ms - 19 ms - *                |
+	|5                              |33 ms - 23 ms - 28 ms            |
+	|6                              |92 ms - 31 ms - 25 ms            |
+	|7                              |31 ms - 36 ms - 32 ms            |
+	|8                              |21 ms - 29 ms - 59 ms            |
+	|9                              |19 ms - 29 ms - 20 ms            |
 
-La deuxième sera le reste de chaque ligne. Cela va donner le nom du routeur par lequel il passe et son IP V6. Attention pour la dernière ligne ce n'est pas un routeur mais un serveur web car il est arrivé a destinations. Si je compare le résultat de ce traceroute et mon schéma de réseau ci-dessus, les valeurs correspondes bien, j'ai le paquet qui passe par le seul routeur que contient mon réseau (en générale la box qui comprend aussi le firewall) puis va ensuite dans les routeur externe pour arriver à la destination voulue (le serveur web).
+- La seconde sera le reste de chaque ligne.
 
-> Pour des raisons de sécurité j'ai remplacer l'IP de mon routeur par des étoiles. Vous vous douterez bien qu'il y aura marqué l'IP de votre routeur lorsque vous le ferrez et non des étoiles. 
+Cela indique le nom du routeur par lequel transite le paquet. La dernière ligne représente la cible.
 
 
+## Scanner des chevaux de Troie sur un réseau
 
-## Le scan de cheval de troie sur réseau
+### Comment ça marche ? 
 
-### Comment sa marche ? 
-
-La bibliothèques requise pour cette fonction est les [socket](https://pypi.org/project/sockets/).
+La bibliothèque [socket](https://pypi.org/project/sockets/) est requise. 
 Installation : `pip3 install socket`
 
 Nous allons nous servir des ports ouvert sur le pare-feu d'un réseau. 
